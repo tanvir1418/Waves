@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const SALT_I = 10;
-require('dotenv').config();
+const jwt = require('jsonwebtoken');    // used for token generation, authentication by token.
+const SALT_I = 10;                      // used when hashing password.
+require('dotenv').config();             // it proves environment secret key.
 
 const userSchema = mongoose.Schema({
     email:{
@@ -43,6 +43,7 @@ const userSchema = mongoose.Schema({
     }
 });
 
+// Hashing password and make password only use at the time of modification / registration.
 userSchema.pre('save', function(next){
     var user = this;
 
@@ -63,7 +64,7 @@ userSchema.pre('save', function(next){
     
 })
 
-
+// This function is used for password matching in login operation
 userSchema.methods.comparePassword = function(candidatePassword, cb) {  // cb stands for 'CALL BACK' function
     bcrypt.compare(candidatePassword, this.password, function(err, isMatch){  // candidatePassword is given by user and this.password is from the database stored password.
         if(err) return cb(err);
@@ -71,7 +72,7 @@ userSchema.methods.comparePassword = function(candidatePassword, cb) {  // cb st
     })
 }
 
-
+// This function is used for token generation for user in login operation
 userSchema.methods.generateToken = function(cb){
     var user = this;                                                  
     var token = jwt.sign(user._id.toHexString(),process.env.SECRET)  //user '_id' from database which will further converted into hex-string and secret password from server environment(.env) 
@@ -83,8 +84,17 @@ userSchema.methods.generateToken = function(cb){
     })
 }
 
+// This function is used for finding the user by token for authentication of user.
+userSchema.statics.findByToken = function(token,cb){                // user created method
+    var user = this;
 
-
+    jwt.verify(token, process.env.SECRET, function(err, decode){      //here decode represents '_id'. (jwt.verify extract '_id' from 'token' using process.env.SECRET key)
+        user.findOne({"_id":decode,"token":token},function(err,user){
+            if(err) return cb(err);
+            cb(null,user);
+        })
+    })
+}
 
 
 const User = mongoose.model('User', userSchema);

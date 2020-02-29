@@ -16,10 +16,29 @@ app.use(cookieParser());
 // Models
 const { User } = require('./models/user');
 
-//========================
-//         USERS
-//========================
+// Middlewares
+const { auth } = require('./middleware/auth');
 
+
+//===============================
+//             USERS
+//===============================
+// This request is connected with middleware -> auth.js
+app.get('/api/users/auth', auth, (req,res)=>{        
+
+    res.status(200).json({
+        isAdmin: req.user.role === 0 ? false:true,
+        isAuth: true,
+        email: req.user.email,
+        name: req.user.name,
+        lastname: req.user.lastname,
+        role: req.user.role,
+        cart: req.user.cart,
+        history: req.user.history
+    })
+})
+
+// This request is connected with model -> user.js
 app.post('/api/users/register',(req,res) => {
     const user = new User(req.body);
     user.save((err, doc) => {
@@ -27,11 +46,13 @@ app.post('/api/users/register',(req,res) => {
         
         res.status(200).json({
             success: true,
-            userdata: doc
+            // userdata: doc
         })
     })
 });
 
+
+// This request is connected with model -> user.js -> userSchema.methods.comparePassword, userSchema.methods.generateToken
 app.post('/api/users/login', (req,res)=> {
     
     User.findOne({'email':req.body.email}, (err,user) => {
