@@ -75,6 +75,20 @@ app.post('/api/users/login', (req,res)=> {
 })
 
 
+//Logout functionality is connected with middleware -> auth.js because as the user is authenticated then user can logout.
+app.get('/api/user/logout', auth, (req, res)=> {
+    User.findOneAndUpdate(
+        { _id:req.user._id },
+        { token: ''},
+        (err, doc) => {
+            if(err) return res.json({ success: false, err});
+            return res.status(200).send({
+                success: true
+            })
+        }
+    )
+})
+
 const port = process.env.PORT || 3002;
 app.listen(port, ()=>{
     console.log(`Server Running at ${port}`)
