@@ -40,7 +40,7 @@ app.post('/api/product/article', auth, admin, (req,res)=>{
     })
 })
 
-// Reading Multiple or Single Product from Database  
+// Reading Multiple or Single Product from Database by using ID
 // Query String: Example Below
 // /api/product/article?id=HSHSHSHSHSHS,JSJSJSJSJS,SDSDHHSHSH,JDJJDDKKDDD&type=array
 // /api/product/article?id=HSHSHSHSHSHS&type=single
@@ -65,6 +65,34 @@ app.get('/api/product/articles_by_id', (req,res)=>{
         return res.status(200).send(docs)
     })
 });
+
+
+
+// Reading Multiple or Single Product from Database by using Order
+// BY ARRIVAL
+// /articles?sortBy=createdAt&order=desc&limit=4
+
+// BY SELL
+// /articles?sortBy=sold&order=desc&limit=4
+
+app.get('/api/product/articles', (req,res)=>{
+
+    let order = req.query.order ? req.query.order : 'asc';
+    let sortBy = req.query.sortBy ? req.query.sortBy : "_id";
+    let limit = req.query.limit ? parseInt(req.query.limit) : 100;
+
+    Product.
+    find().
+    populate('brand').
+    populate('wood').
+    sort([[sortBy,order]]).
+    limit(limit).
+    exec((err, articles)=>{
+        if(err) return res.status(400).send(err);
+        res.send(articles)
+    })
+})
+
 
 //===============================
 //             WOOD
