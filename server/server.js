@@ -17,10 +17,29 @@ app.use(cookieParser());
 const { User } = require('./models/user');
 const { Brand } = require('./models/brand');
 const { Wood } = require('./models/wood');
+const { Product } = require('./models/product');
 
 // Middlewares
 const { auth } = require('./middleware/auth');
 const { admin } = require('./middleware/admin');
+
+//===============================
+//             PRODUCTS
+//===============================
+// This request is connected with models -> product.js, middleware -> auth.js, admin.js
+app.post('/api/product/article', auth, admin, (req,res)=>{
+    const product = new Product(req.body);
+
+    product.save((err,doc)=>{
+        if(err) return res.json({success:false, err});
+
+        res.status(200).json({
+            success: true,
+            article: doc
+        })
+    })
+})
+
 
 //===============================
 //             WOOD
