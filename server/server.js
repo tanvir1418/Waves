@@ -40,6 +40,31 @@ app.post('/api/product/article', auth, admin, (req,res)=>{
     })
 })
 
+// Reading Multiple or Single Product from Database  
+// Query String: Example Below
+// /api/product/article?id=HSHSHSHSHSHS,JSJSJSJSJS,SDSDHHSHSH,JDJJDDKKDDD&type=array
+// /api/product/article?id=HSHSHSHSHSHS&type=single
+
+app.get('/api/product/articles_by_id', (req,res)=>{
+    let type = req.query.type;                          // this comes from the query string we gave to search using 'body-parser'
+    let items = req.query.id;                           // this comes from the query string
+
+    if(type==="array"){
+        let ids = req.query.id.split(',');
+        items = [];
+        items = ids.map(item=>{
+            return mongoose.Types.ObjectId(item)
+        })
+    }
+
+    Product.
+    find({'_id':{$in:items}}).
+    populate('brand').                              // This connected to product.js -> brand:{ }
+    populate('wood').                               // This connected to product.js -> wood:{ }
+    exec((err,docs)=>{
+        return res.status(200).send(docs)
+    })
+});
 
 //===============================
 //             WOOD

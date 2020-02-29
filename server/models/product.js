@@ -20,7 +20,7 @@ const productSchema = mongoose.Schema({
     },
     brand:{
         type: Schema.Types.ObjectId,
-        ref: 'Brand',
+        ref: 'Brand',                       // This connected to brand.js -> Brand
         required: true
     },
     shipping:{
@@ -33,7 +33,7 @@ const productSchema = mongoose.Schema({
     },
     wood:{
         type: Schema.Types.ObjectId,
-        ref: 'Wood',
+        ref: 'Wood',                        // This connected to wood.js -> Wood
         required: true
     },
     frets:{
