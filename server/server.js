@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 require('dotenv').config();   //used for using .env file also add as dependencies in package.json
 
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.DATABASE);
+mongoose.connect(process.env.DATABASE,  { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true } );  //  ,{ useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true } is newly added.
 
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
@@ -217,3 +217,4 @@ const port = process.env.PORT || 3002;
 app.listen(port, ()=>{
     console.log(`Server Running at ${port}`)
 })
+
