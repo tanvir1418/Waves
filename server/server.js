@@ -200,7 +200,7 @@ app.post('/api/users/login', (req,res)=> {
 
 
 //Logout functionality is connected with middleware -> auth.js because as the user is authenticated then user can logout.
-app.get('/api/user/logout', auth, (req, res)=> {
+app.get('/api/users/logout', auth, (req, res)=> {
     User.findOneAndUpdate(
         { _id:req.user._id },
         { token: ''},
