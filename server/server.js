@@ -104,6 +104,8 @@ app.post('/api/product/article', auth, admin, (req,res)=>{
 // /api/product/article?id=HSHSHSHSHSHS,JSJSJSJSJS,SDSDHHSHSH,JDJJDDKKDDD&type=array
 // /api/product/article?id=HSHSHSHSHSHS&type=single
 
+/////   This request is used for showing a single product detail   /////
+
 app.get('/api/product/articles_by_id', (req,res)=>{
     let type = req.query.type;                          // this comes from the query string we gave to search using 'body-parser'
     let items = req.query.id;                           // this comes from the query string
