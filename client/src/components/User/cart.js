@@ -9,6 +9,10 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import faFrown from '@fortawesome/fontawesome-free-solid/faFrown';
 import faSmile from '@fortawesome/fontawesome-free-solid/faSmile';
 
+//  AYaUHBAn7iMB3UYDzZ3Q0YnLXhsyRO22lIEzwfYWZC7ULHxb4K-r-QJL5w1QP61L58tIEl-y4I_mgg5Y
+
+import Paypal from '../utils/paypal';
+
 class UserCart extends Component {
     
     state = {
@@ -73,6 +77,21 @@ class UserCart extends Component {
             </div>
         </div>
     )
+
+    transactionError = (data) => {
+        console.log('Paypal error')
+    }
+
+    transactionCanceled = () => {
+        console.log('Transaction canceled')
+    }
+
+    transactionSuccess = () => {
+        this.setState({
+            showTotal: false,
+            showSuccess: true
+        })
+    }
     
     render() {
         return (
@@ -113,7 +132,12 @@ class UserCart extends Component {
                     {
                         this.state.showTotal ? 
                             <div className="paypal_button_container">
-                                Paypal
+                                <Paypal
+                                    toPay={this.state.total}
+                                    transactionError={(data)=> this.transactionError(data)}
+                                    transactionCanceled={(data)=> this.transactionCanceled(data)}
+                                    onSuccess={(data)=> this.transactionSuccess(data)}
+                                />
                             </div>
                         :null
                     }
