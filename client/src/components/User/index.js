@@ -13,11 +13,11 @@ const UserDashboard = ({user}) => {
                     <div>
                         <span>{user.userData.name}</span>
                         <span>{user.userData.lastname}</span>
-                        <span>{user.userData.email}</span>
+                        <span><strong>Email: </strong>{user.userData.email}</span>
 
                         {/*                         
-                        <span>{user.userData.name} {user.userData.lastname}</span>
-                        <span>{user.userData.email}</span>
+                        <span><strong>Name: </strong>{user.userData.name} {user.userData.lastname}</span>
+                        <span><strong>Email: </strong>{user.userData.email}</span>
                          */}
 
                     </div>
