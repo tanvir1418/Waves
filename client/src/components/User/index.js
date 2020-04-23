@@ -11,14 +11,13 @@ const UserDashboard = ({user}) => {
                 <div className="user_nfo_panel">
                     <h1>User information</h1>
                     <div>
-                        <span>{user.userData.name}</span>
+                        {/* <span>{user.userData.name}</span>
                         <span>{user.userData.lastname}</span>
-                        <span><strong>Email: </strong>{user.userData.email}</span>
-
-                        {/*                         
+                        <span>{user.userData.email}</span> */}
+                         
                         <span><strong>Name: </strong>{user.userData.name} {user.userData.lastname}</span>
                         <span><strong>Email: </strong>{user.userData.email}</span>
-                         */}
+                        
 
                     </div>
                     <MyButton
